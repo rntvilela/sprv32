@@ -1,0 +1,15 @@
+#!/bin/sh
+
+rtl_files="./rtl_files"
+tb_files="./tb_files"
+
+iverilog -f "$rtl_files" -f "$tb_files" && vvp "./a.out" || exit
+
+dump_file="./dump.vcd"
+
+if [ "$1" = "-g" ]
+then
+	[ -f "$dump_file" ] && gtkwave $dump_file || exit
+else
+	exit
+fi
