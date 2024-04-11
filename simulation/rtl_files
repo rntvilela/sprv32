@@ -1,1 +1,2 @@
 ../rtl/register_file.v
+../rtl/alu.v
