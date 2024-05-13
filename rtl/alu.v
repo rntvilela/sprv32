@@ -3,7 +3,7 @@ module alu (
 	input [31:0] srca,
 	input [31:0] srcb,
 	output zero,
-	output [31:0] aluresult
+	output reg [31:0] aluresult
 );
 
 	localparam ADD = 3'b000;
@@ -12,11 +12,16 @@ module alu (
 	localparam OR  = 3'b011;
 	localparam AND = 3'b010;
 
-	assign aluresult = (alucontrol == ADD )? srca + srcb :
-					   (alucontrol == SUB )? srca - srcb :
-					   (alucontrol == SLT )? srca < srcb :
-					   (alucontrol == OR  )? srca | srcb :
-					   (alucontrol == AND )? srca & srcb : 32'b0;
+	always @(*) begin
+		case(alucontrol)
+			ADD : aluresult = srca + srcb;
+			SUB : aluresult = srca - srcb; 
+			SLT : aluresult = srca < srcb;
+			OR  : aluresult = srca | srcb;
+			AND : aluresult = srca & srcb; 
+			default : aluresult = 32'b0;
+		endcase
+	end
 
 	assign zero = (aluresult == 32'b0);
 
